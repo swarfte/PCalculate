@@ -2,7 +2,7 @@
 Author: Swarfte
 Date: 2021-08-09 21:36:18
 LastEditors: Swarfte
-LastEditTime: 2021-08-10 23:25:36
+LastEditTime: 2021-08-28 12:14:14
 FilePath: \calculate\local_keybroad.py
 FileOutput: pyinstaller -F -w file_name.py -p C:/python/lib/site-packages 
 GithubName: Swarfte
@@ -49,7 +49,7 @@ class keybroad_event (object):
         ]
         
         self.calculating_signs_value = [
-            "+","-","*","./",".",",","Shift+6","Shift+9","Shift+0","Shift+5","l"
+            "+","-","*","/",".",",","Shift+6","Shift+9","Shift+0","Shift+5","l"
         ]
         
         for x in range(len(self.calculating_signs)):
