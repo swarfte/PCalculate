@@ -1,8 +1,8 @@
 '''
 Author: Swarfte
 Date: 2021-08-09 21:36:18
-LastEditors: Swarfte
-LastEditTime: 2021-08-11 00:23:36
+LastEditors: Chau Lap Tou
+LastEditTime: 2021-08-30 21:57:56
 FilePath: \calculate\local_function.py
 FileOutput: pyinstaller -F -w file_name.py -p C:/python/lib/site-packages 
 GithubName: Swarfte
@@ -10,8 +10,10 @@ GithubName: Swarfte
 import random as rd
 import math
 import re
+import sympy as SP
 
 Lastnumber = ""#*用作記憶功能,即紀錄結果
+DecimalPlaces = 2 #*預設保留的小數位
 
 def CalcLog(sentence):#*計算對數
     get_num = sentence
@@ -24,6 +26,68 @@ def CalcLog(sentence):#*計算對數
     else:#*沒有輸入底數的情況
         logarithm = float(sentence)
     ans = math.log(logarithm,log_base)#*log() 函式接受兩個引數。第一個引數是數字，第二個引數是基值
+    return ans
+
+def CalcTrigonometric(sentence,mode):#*計算三角函數
+    get_num = sentence
+    ans = 0
+    if "," in get_num:
+        get_num = get_num[:len(get_num)-1]
+        num = float(get_num)
+        if mode == "sin" :
+            ans = SP.cos(math.radians(num))#*化為弧度制
+        elif mode == "tan":
+            ans = SP.cot(math.radians(num))
+        elif mode == "sec":
+            ans = SP.csc(math.radians(num))
+    else:
+        num = float(get_num)
+        if mode == "sin" :
+            ans = SP.sin(math.radians(num))
+        elif mode == "tan":
+            ans = SP.tan(math.radians(num))
+        if mode == "sec" :
+            ans = SP.sec(math.radians(num))
+    return ans#*預設保留小數位後2位
+
+def ReplaceExpression(sentence):
+    ans = sentence
+    if ".." in ans: #*在運算時改變式子保留的小數點,且只允許式子出現一次
+        choose = re.compile(r"\.\.[0-9]+")
+        num_native = re.search(choose,ans).group()#*帶有..
+        num_get = num_native[2:]
+        global DecimalPlaces
+        DecimalPlaces = int(num_get)
+        ans = ans.replace(num_native,"")#*用空白替換
+        
+    while "log" in ans:#*處理式子中全部Log數
+        choose = re.compile(r"log[0-9]+\.?[0-9]*\,[0-9]+\.?[0-9]*|log[0-9]+\.?[0-9]*")#*找出log數的位置
+        log_native = re.search(choose,ans).group()#*帶有Log字串
+        log_get = log_native[3:]#*獲取關建的數字(log的數字)
+        log_ans = str(CalcLog(log_get)) #*獲取答案
+        ans = ans.replace(log_native,log_ans)#*把答案取代輸入中的log,同時覆蓋原來的輸入端
+        
+    while "sin" in ans:#*處理式子中全迎的sin/cos
+        choose = re.compile(r"sin[0-9]+\.?[0-9]*\,?")#*找出sin的位置
+        num_native = re.search(choose,ans).group()#*帶有sin
+        num_get = num_native[3:]
+        num_ans= str(CalcTrigonometric(num_get,"sin"))
+        ans = ans.replace(num_native,num_ans)
+        
+    while "tan" in ans:#*處理式子中全迎的tan/cos
+        choose = re.compile(r"tan[0-9]+\.?[0-9]*\,?")#*找出tan的位置
+        num_native = re.search(choose,ans).group()#*帶有tan
+        num_get = num_native[3:]
+        num_ans= str(CalcTrigonometric(num_get,"tan"))
+        ans = ans.replace(num_native,num_ans)
+        
+    while"sec" in ans:#*處理式子中全迎的sec/csc
+        choose = re.compile(r"sec[0-9]+\.?[0-9]*\,?")#*找出sec的位置
+        num_native = re.search(choose,ans).group()#*帶有sce
+        num_get = num_native[3:]
+        num_ans= str(CalcTrigonometric(num_get,"sec"))
+        ans = ans.replace(num_native,num_ans)
+        
     return ans
 
 class function(object):
@@ -100,14 +164,14 @@ class function(object):
         try:
             global Lastnumber
             self.input = inputline.text()
-            while "log" in self.input:
-                choose = re.compile(r"log[0-9]+\.?[0-9]*\,[0-9]+\.?[0-9]*|log[0-9]+\.?[0-9]*")#*找出log數的位置
-                log_native = re.search(choose,self.input).group()#*帶有Log字串
-                log_get = log_native[3:]#*獲取關建的數字(log的數字)
-                log_ans = str(CalcLog(log_get)) #*獲取答案
-                self.input = self.input.replace(log_native,log_ans)#*把答案取代輸入中的log,同時覆蓋原來的輸入端
-                    
-            ans = eval(self.input)#*計算結果
+            self.input = ReplaceExpression(self.input)#*處理log數
+            
+            global DecimalPlaces
+            try :
+                ans = round(eval(self.input),DecimalPlaces)#*計算結果
+            except:
+                ans = str(eval(self.input))
+                ans += "it is a error"
             outputline.setText(str(ans))#*在輸出端顯示結果
             Lastnumber = str(ans)
         except :

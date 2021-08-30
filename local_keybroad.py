@@ -1,8 +1,8 @@
 '''
 Author: Swarfte
 Date: 2021-08-09 21:36:18
-LastEditors: Swarfte
-LastEditTime: 2021-08-28 12:14:14
+LastEditors: Chau Lap Tou
+LastEditTime: 2021-08-30 15:45:08
 FilePath: \calculate\local_keybroad.py
 FileOutput: pyinstaller -F -w file_name.py -p C:/python/lib/site-packages 
 GithubName: Swarfte
@@ -45,11 +45,14 @@ class keybroad_event (object):
             self.keybroad.leftparenthesis,#*左括號
             self.keybroad.closingparenthesis,#*右括號
             self.keybroad.remainder,#*餘號
-            self.keybroad.log
+            self.keybroad.log,#*log數
+            self.keybroad.sin,#*sin
+            self.keybroad.tan,#*cos
+            self.keybroad.sec#*tan
         ]
         
         self.calculating_signs_value = [
-            "+","-","*","/",".",",","Shift+6","Shift+9","Shift+0","Shift+5","l"
+            "+","-","*","/",".",",","Shift+6","Shift+9","Shift+0","Shift+5","l","s","t","Shift+s"
         ]
         
         for x in range(len(self.calculating_signs)):
@@ -62,7 +65,7 @@ class keybroad_event (object):
             self.keybroad.deletenum,#*剛除最尾的數字
             self.keybroad.randommath,#*生成隨機數字
             self.keybroad.randomenglish,#*生成隨機英文
-            self.keybroad.lastnumber#*記憶鍵(顯示上一個等號後的結果)
+            self.keybroad.lastnumber,#*記憶鍵(顯示上一個等號後的結果)
         ]
         
         self.Tool_value=[

@@ -1,13 +1,12 @@
 '''
 Author: Swarfte
 Date: 2021-08-09 21:36:18
-LastEditors: Swarfte
-LastEditTime: 2021-08-11 00:31:33
+LastEditors: Chau Lap Tou
+LastEditTime: 2021-08-30 21:02:06
 FilePath: \calculate\local_button.py
 FileOutput: pyinstaller -F -w file_name.py -p C:/python/lib/site-packages 
 GithubName: Swarfte
 '''
-import PyQt5 as PQ
 import local_function as LF
 class button_event(object):
     def __init__(self,gui):#*傳入main的GUI檔案
@@ -43,6 +42,9 @@ class button_event(object):
         self.buttons.closingparenthesis.clicked.connect(lambda:self.func.Printf(self.buttons.InputLine,")"))#*按下按鈕)時輸出")"
         self.buttons.remainder.clicked.connect(lambda:self.func.Printf(self.buttons.InputLine,"%"))#*按下按鈕%時輸出"%"
         self.buttons.log.clicked.connect(lambda:self.func.Printf(self.buttons.InputLine,"log"))#*按下按鈕log時輸出"log"
+        self.buttons.sin.clicked.connect(lambda:self.func.Printf(self.buttons.InputLine,"sin"))#*按下按鈕log時輸出"log"
+        self.buttons.tan.clicked.connect(lambda:self.func.Printf(self.buttons.InputLine,"tan"))#*按下按鈕log時輸出"log"
+        self.buttons.sec.clicked.connect(lambda:self.func.Printf(self.buttons.InputLine,"sec"))#*按下按鈕log時輸出"log"
         
         #?功能類的部份
         self.buttons.clean.clicked.connect(lambda:self.func.Clean(self.buttons.InputLine,self.buttons.OutputLine))#&按下按鈕CLS時清空輸入欄
@@ -50,5 +52,5 @@ class button_event(object):
         self.buttons.deletenum.clicked.connect(lambda:self.func.Delete(self.buttons.InputLine))#&按下按鈕<-時刪除前一個字符
         self.buttons.randommath.clicked.connect(lambda:self.func.RandomMath(self.buttons.InputLine,self.buttons.OutputLine))#&按下按鈕DICE時會根據輸入端輸出對應的結果
         self.buttons.randomenglish.clicked.connect(lambda:self.func.RandomEnglish(self.buttons.InputLine,self.buttons.OutputLine))#&按下按鈕ABC時會根據輸入端輸出對應的結果
-        self.buttons.lastnumber.clicked.connect(lambda:self.func.RememberNumber(self.buttons.InputLine))
+        self.buttons.lastnumber.clicked.connect(lambda:self.func.RememberNumber(self.buttons.InputLine))#&記憶鍵功能
         

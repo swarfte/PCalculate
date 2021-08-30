@@ -1,8 +1,8 @@
 '''
 Author: Swarfte
 Date: 2021-08-09 21:36:18
-LastEditors: Swarfte
-LastEditTime: 2021-08-10 19:06:05
+LastEditors: Chau Lap Tou
+LastEditTime: 2021-08-30 21:14:07
 FilePath: \calculate\start.py
 FileOutput: pyinstaller -F -w file_name.py -p C:/python/lib/site-packages 
 GithubName: Swarfte
